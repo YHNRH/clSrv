@@ -27,6 +27,7 @@ public class MultiThreadServer {
 							   
 							   for (MonoThreadClientHandler cli1 : clients)
 							       {
+								   System.out.println("Делю принт " + message);
 								   cli1.printMessage(message);
 							       }
 							   cli.setMessage("");

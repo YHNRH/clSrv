@@ -1,5 +1,9 @@
-import java.util.*;
+// DEP == DEPRECATED
 
+import java.util.*;
+import java.awt.event.*;
+import javax.swing.*;
+import java.awt.*;
 import java.nio.charset.StandardCharsets;
 import java.net.Socket;
 import java.io.BufferedReader;
@@ -14,11 +18,14 @@ public class Client
 {
     public static void main(String[] a)
     {
-	Scanner scaner  = new Scanner(System.in);
-	String  request = "ERROR";
+	MyFrame frame = new MyFrame();
+       
+	//   	Scanner scaner  = new Scanner(System.in);       DEP
+
 	String  reply   = "ERROR";
-	System.out.println("Enter your name");
-	String name = scaner.nextLine();
+	//	System.out.println("Enter your name");          DEP
+	//      String name = scaner.nextLine();                DEP
+	String name = frame.getName();
 	
 	try (
 	     Socket socket  = new Socket("localhost", 8080);
@@ -29,68 +36,93 @@ public class Client
 		try (
 		     DataInputStream input   = new DataInputStream(socket.getInputStream());
 		     DataOutputStream output = new DataOutputStream(socket.getOutputStream())) {
-		    
-		    output.writeUTF(name);
-		    output.flush();
-		    System.out.println("You're connected!\nPrint help to show all commands");
 
-		     
 		    Thread thread = new Thread(() ->
 					       {
 						   while(true)
 						       {
 							   try{
-							       System.out.println(input.readUTF());
+							       frame.getMainArea().printMessage(input.readUTF());
+							  
 							   }
 							   catch(Exception e)
 							       {
 								   System.out.println("ERRORRRRR");
 							       }
+
 							   try
 							       {
-								   Thread.sleep(50);
+								   Thread.sleep(500);
 							       }
 							   catch(Exception e)
 							       {}
 						       }
 					       });
+		    
+		    output.writeUTF(name);
+		    output.flush();
+		    //System.out.println("You're connected!\nPrint help to show all commands");
+		    		    thread.start();
+		     
+		    
 		   
 		    
-
+		    frame.getBotPanel().getButton().addActionListener(new ActionListener() {
+			    public void actionPerformed(ActionEvent e) {
+				Date date = new Date();
+				try
+				    {
+					String request =  frame.getBotPanel().getTextField().getText();
+					frame.getBotPanel().getTextField().setText("");
+					output.writeUTF(date + " "+ name +"> " + request);
+					output.flush();
+				    }
+				catch (Exception ex)
+				    {
+					
+				    }
+			    }
+			});
 		    
-		    while (!request.equals("quit"))
-			{
-			    reply = "ERROR";
-			    System.out.print(name +"> ");
+		    // while (!request.equals("quit"))
+		    //	{
+			    //     reply = "ERROR";
+			    //	   System.out.print(name +"> "); DEP
 			    			
-			    request = scaner.nextLine();
-			    output.writeUTF(request);
-			    output.flush();
+			    //     request = scaner.nextLine();
+			    //	   output.writeUTF(request);
+			    //     output.flush();
 
-			    reply = input.readUTF();
+			    //	    reply = input.readUTF();
 
-			    if (reply.equals("---- You're entered chat room ----"))
+			    //      if (reply.equals("---- You're entered chat room ----"))
+			    //	{
+			    //	    System.out.println("---- You're entered chat room ----\nPrint /quit to left");
+		    //			    frame.getMainArea().printMessage("---- You're entered chat room ----\nPrint /quit to left");
+		
+				    // while(!request.equals("/quit"))
+				    //	{
+					    
+					   
+
+				    //	}
+				    //thread.stop();
+				    //reply = input.readUTF();
+				    //	}
+
+				    //System.out.println(reply);
+				    //	}
+
+		    while(true)
+			{
+			    frame.getMainArea().repaint();
+			    try
 				{
-		        	    System.out.println("---- You're entered chat room ----\nPrint /quit to left");
-				    thread.start();
-				    while(!request.equals("/quit"))
-					{
-					    
-					    Date date = new Date();
-					    
-					    request = scaner.nextLine();
-					    output.writeUTF(date + " "+ name +"> " + request);
-					    output.flush();
-
-					}
-				    thread.stop();
-				    reply = input.readUTF();
+				    Thread.sleep(150);
 				}
-
-			    System.out.println(reply);
+			    catch (Exception e)
+				{}
 			}
-
-                    
                 }
 		 catch (IOException ex) {
 		     ex.printStackTrace();

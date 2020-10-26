@@ -1,0 +1,38 @@
+import java.awt.Color;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
+public class MyFrame extends JFrame{
+
+    public MyFrame() {
+
+        getContentPane().setBackground(Color.DARK_GRAY);
+        setTitle("Chat");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setVisible(true);
+        setResizable(false);
+        setSize(1000, 1000);
+	getContentPane().add(BorderLayout.SOUTH, new BotPanel());
+        getContentPane().add(BorderLayout.NORTH, new TopMenu());
+	//        getContentPane().add(BorderLayout.CENTER, ta);
+	String m = JOptionPane.showInputDialog(frame, "Anyone there?");
+        if(m.isEmpty()){
+            frame.closeIt();
+        }
+
+    }
+
+    private void closeIt(){
+
+        this.getContentPane().setVisible(false);
+        this.dispose();
+
+    }
+
+   
+    //    InputDialogInFrame frame = new InputDialogInFrame();
+   
+
+    
+
+}
