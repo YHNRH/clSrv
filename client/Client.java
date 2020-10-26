@@ -32,7 +32,7 @@ public class Client
 		    
 		    output.writeUTF(name);
 		    output.flush();
-		    System.out.println("You're connected!");
+		    System.out.println("You're connected!\nPrint help to show all commands");
 
 		     
 		    Thread thread = new Thread(() ->
@@ -71,7 +71,7 @@ public class Client
 
 			    if (reply.equals("---- You're entered chat room ----"))
 				{
-		        	    System.out.println("---- You're entered chat room ----");
+		        	    System.out.println("---- You're entered chat room ----\nPrint /quit to left");
 				    thread.start();
 				    while(!request.equals("/quit"))
 					{

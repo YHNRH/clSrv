@@ -93,7 +93,7 @@ public class MonoThreadClientHandler implements Runnable {
                 }
 
 		     if (entry.equalsIgnoreCase("help") && state == 0) {
-			 reply = "This is list of commands\nquit - exiting this server\nhelp - show list of all commands.";
+			 reply = "This is list of commands\nquit - exiting this server\nhelp - show list of all commands.\nenter - enter the chat room";
                 	     
                 }
 
